@@ -29,7 +29,7 @@ fn main() {
     // retrieve the current UTC date, convert it to NaiveDate format and store it in variable today_date
     let today_date:NaiveDate = Utc::now().date_naive();
 
-    // assign a variable diff with the difference in between today_date and birth_date using signed_duration_since
+    // assign a variable diff with the difference between today_date and birth_date using signed_duration_since
     let diff = today_date.signed_duration_since(birth_date);
 
     // calculate and store the number of days from the diff (duration) object in days_alive variable
@@ -53,6 +53,7 @@ fn main() {
         let plot_date = today_date.checked_add_signed(Duration::days(days)).unwrap();
 
         // create a mutable string called plot_string which starts with the plot_date
+        // this string is a line which will contain the plot points represented by characters
         let mut plot_string = plot_date.format("%Y-%m-%d").to_string();
 
         // add a ":" and a space to the plot_string to aid output readability
@@ -69,10 +70,16 @@ fn main() {
         for j in -40..40 {
 
             // if that position in the graph coorelates to a graphable point then add a character representing that cycle        
+            // *authors note: I was trying to wrap my head around this match expression so I force myself to use it.
+            // It makes no allowance for the graph to show points that might intersect.
+            // So if any of the values share a common point only the first evaluated one will show on the graph
+            // if I feel like mashing my head against the desk for a few hours I might come back and create a more
+            // complex match guard which would plot an 'X' where 2 or more cycles overlap.
             match j {
                 x if x == phy => {plot_string.push('P')}
                 x if x == emo => {plot_string.push('E')}
                 x if x == int => {plot_string.push('I')}
+
                 // if there is no point to plot, add a space to the plot_string
                 _ => plot_string.push(' '),
             }
