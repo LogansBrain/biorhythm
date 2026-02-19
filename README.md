@@ -20,7 +20,7 @@ My instincts kept telling me that I should be able to write
             }
         }
 
-and quite honestly, I still am not positive why it doesn't? Is it 
+and quite honestly, I still am not positive why it doesn't work. Is it 
 because of Ownership? The manual says the IF match guards allow
 more complex expressions, but why do these not "equal"?
 
