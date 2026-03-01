@@ -91,4 +91,70 @@ fn main() {
         days +=1;
  
     }
+
+    // Attempting to make a second graph using nested IF statements to control character output with overlay detection.
+    
+    println!("-------------------------------------Plotting Biorhythms-------------------------------------");
+
+    // Reset days
+
+    days = 0;
+
+    while days < 30 {
+        // plot_date represents the day being plotted
+        // It is today_date + the number of days represented by our loop
+        let plot_date = today_date.checked_add_signed(Duration::days(days)).unwrap();
+
+        // create a mutable string called plot_string which starts with the plot_date
+        // this string is a line which will contain the plot points represented by characters
+        let mut plot_string = plot_date.format("%Y-%m-%d").to_string();
+
+        // add a ":" and a space to the plot_string to aid output readability
+        plot_string.push_str(": ");
+
+        // create 3 plot points, phy, emo, int using sine wave function sin() and PI constants
+        // each point is calculated using a different cycle and cast as a 32bit integer.
+        // plot_point = sin(2*pi*days_alive+days (loop) / "daily cycle 23/28/33") then multiply by 30 for graph scale
+        let phy: i32 = (f64::sin(2.0 * std::f64::consts::PI * (days_alive as f64 + days as f64) / 23.0) * 30.0) as i32;   
+        let emo: i32 = (f64::sin(2.0 * std::f64::consts::PI * (days_alive as f64 + days as f64) / 28.0) * 30.0) as i32;   
+        let int: i32 = (f64::sin(2.0 * std::f64::consts::PI * (days_alive as f64 + days as f64) / 33.0) * 30.0) as i32;   
+
+        // j represents the current position in the graph from -40 to 40
+        for j in -40..40 {
+
+            // if that position in the graph coorelates to a graphable point then add a character representing that cycle        
+            // if traits overlap there should be an X instead of the corresponding letter of the trait.
+
+            if j == phy {
+                if  phy == emo || phy == int {
+                    plot_string.push('X')
+                } else {
+                    plot_string.push('P')
+                }
+            } else {
+                if j == emo {
+                    if emo == int {
+                        plot_string.push('X')
+                    } else {
+                        plot_string.push('E')
+                    }
+                } else {
+                    if j == int {
+                        plot_string.push('I')
+                    } else {
+                        plot_string.push(' ')
+                    }                    
+                }
+
+            }
+
+        }
+        // print the string which is a text representation of the 3 sine waves.
+        println!("{}: ",plot_string);
+
+        // increment the day to graph and repeat
+        days +=1;
+ 
+    }
+
 }
